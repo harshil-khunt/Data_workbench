@@ -158,7 +158,7 @@ async def generate_statistical_report(file_id: str):
     from ydata_profiling import ProfileReport
     if file_id not in df_cache: return RedirectResponse(url="/")
     df = df_cache[file_id]
-    profile = ProfileReport(df, title="Statistical Profile")
+    profile = ProfileReport(df, title="Statistical Profile", minimal=True)
     return HTMLResponse(content=profile.to_html())
 
 # ==============================================================================
@@ -202,4 +202,5 @@ async def ask_question(file_id: str, item: ChatQuestion):
         exec(code, {'df': df, 'pd': pd}, {'__builtins__': {}, 'print': lambda *a, **k: print(*a, file=output_stream, **k)})
         answer = output_stream.getvalue() or "Action performed."
     except Exception as e: answer = f"Error: {e}"
+
     return {"answer": answer}
